@@ -1,18 +1,57 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { UserDto } from '@/pojo/user.ts'
+import { onMounted, ref } from 'vue'
+import request from '@/utils/request'
+import router from '@/router'
+import { useUserStore } from '@/stores/user.ts'
+
+const userDto = new UserDto('', '')
+// userStore
+const userStore = useUserStore()
+const isLoading = ref(false)
+
+async function login(): Promise<void> {
+  isLoading.value = true
+  await request({
+    url: '/user/login',
+    method: 'POST',
+    data: userDto,
+  }).then((res) => {
+    if (res.data.code === 200) {
+      router.push('/chat')
+      // 获取用户信息
+      getUserInfo()
+    }
+    isLoading.value = false
+  })
+}
+
+async function getUserInfo(): Promise<void> {
+  await request({
+    url: '/user/info',
+    method: 'GET',
+  }).then((res) => {
+    userStore.userInfo.id = res.data.data.id
+    userStore.userInfo.username = res.data.data.username
+  })
+}
+
+onMounted(() => {})
+</script>
 
 <template>
-  <div class="wrapper">
+  <div v-loading="isLoading" class="wrapper">
     <div class="card-switch">
       <label class="switch">
-        <input type="checkbox" class="toggle" />
+        <input class="toggle" type="checkbox" />
         <span class="slider"></span>
         <span class="card-side"></span>
         <div class="flip-card__inner">
           <div class="flip-card__front">
             <div class="title">Log in</div>
-            <form class="flip-card__form" action="">
+            <form class="flip-card__form" @submit.prevent="login">
               <div class="form-control">
-                <input type="text" required="" />
+                <input v-model="userDto.username" :required="true" type="text" />
                 <label>
                   <span style="transition-delay: 0ms">U</span
                   ><span style="transition-delay: 50ms">s</span
@@ -25,7 +64,7 @@
                 </label>
               </div>
               <div class="form-control">
-                <input type="password" required="" />
+                <input v-model="userDto.password" :required="true" type="password" />
                 <label>
                   <span style="transition-delay: 0ms">P</span
                   ><span style="transition-delay: 50ms">a</span
@@ -42,9 +81,9 @@
           </div>
           <div class="flip-card__back">
             <div class="title">Sign up</div>
-            <form class="flip-card__form" action="">
+            <form action="" class="flip-card__form">
               <div class="form-control">
-                <input type="text" required="" />
+                <input :required="true" type="text" />
                 <label>
                   <span style="transition-delay: 0ms">N</span
                   ><span style="transition-delay: 50ms">a</span
@@ -53,7 +92,7 @@
                 </label>
               </div>
               <div class="form-control">
-                <input type="email" required="" />
+                <input :required="true" type="email" />
                 <label>
                   <span style="transition-delay: 0ms">E</span
                   ><span style="transition-delay: 50ms">m</span
@@ -63,7 +102,7 @@
                 </label>
               </div>
               <div class="form-control">
-                <input type="password" required="" />
+                <input :required="true" type="password" />
                 <label>
                   <span style="transition-delay: 0ms">P</span
                   ><span style="transition-delay: 50ms">a</span
@@ -291,10 +330,6 @@
 }
 
 .flip-card__btn:active,
-.button-confirm:active {
-  box-shadow: 0px 0px var(--main-color);
-  transform: translate(3px, 3px);
-}
 
 .flip-card__btn {
   margin: 20px 0 20px 0;
