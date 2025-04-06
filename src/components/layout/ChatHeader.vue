@@ -24,7 +24,9 @@ const logout = () => {
   // 1. 清除用户token
   userStore.userInfo.token = ''
   // 2. 跳转到登录页
-  router.push('/login')
+  router.push('/login').then(() => {
+    window.location.reload()
+  })
 }
 
 // props
