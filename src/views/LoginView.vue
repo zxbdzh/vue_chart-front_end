@@ -26,6 +26,24 @@ async function login(): Promise<void> {
   })
 }
 
+// 注册
+async function register(): Promise<void> {
+  isLoading.value = true
+  await request({
+    url: '/user/register',
+    method: 'POST',
+    data: userDto,
+  }).then((res) => {
+    if (res.data.code === 200) {
+      login()
+      router.push('/chat').then(() => {
+        window.location.reload()
+      })
+    }
+    isLoading.value = false
+  })
+}
+
 async function getUserInfo(): Promise<void> {
   await request({
     url: '/user/info',
@@ -81,28 +99,22 @@ onMounted(() => {})
           </div>
           <div class="flip-card__back">
             <div class="title">Sign up</div>
-            <form action="" class="flip-card__form">
+            <form @submit.prevent="register" class="flip-card__form">
               <div class="form-control">
-                <input :required="true" type="text" />
+                <input v-model="userDto.username" :required="true" type="text" />
                 <label>
-                  <span style="transition-delay: 0ms">N</span
-                  ><span style="transition-delay: 50ms">a</span
-                  ><span style="transition-delay: 100ms">m</span
-                  ><span style="transition-delay: 150ms">e</span>
+                  <span style="transition-delay: 0ms">U</span
+                  ><span style="transition-delay: 50ms">s</span
+                  ><span style="transition-delay: 100ms">e</span
+                  ><span style="transition-delay: 150ms">r</span
+                  ><span style="transition-delay: 200ms">n</span
+                  ><span style="transition-delay: 250ms">a</span
+                  ><span style="transition-delay: 300ms">m</span
+                  ><span style="transition-delay: 350ms">e</span>
                 </label>
               </div>
               <div class="form-control">
-                <input :required="true" type="email" />
-                <label>
-                  <span style="transition-delay: 0ms">E</span
-                  ><span style="transition-delay: 50ms">m</span
-                  ><span style="transition-delay: 100ms">a</span
-                  ><span style="transition-delay: 150ms">i</span
-                  ><span style="transition-delay: 200ms">l</span>
-                </label>
-              </div>
-              <div class="form-control">
-                <input :required="true" type="password" />
+                <input v-model="userDto.password" :required="true" type="password" />
                 <label>
                   <span style="transition-delay: 0ms">P</span
                   ><span style="transition-delay: 50ms">a</span
@@ -330,7 +342,6 @@ onMounted(() => {})
 }
 
 .flip-card__btn:active,
-
 .flip-card__btn {
   margin: 20px 0 20px 0;
   width: 120px;
