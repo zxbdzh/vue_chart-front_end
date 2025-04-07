@@ -30,8 +30,6 @@ function request(options: AxiosRequestConfig) {
       // 应用响应拦截器
       // 判断code是否异常
       if (response?.data.code === 500) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
         ElMessage({
           message: response.data.message,
           type: 'error',
@@ -52,8 +50,6 @@ function request(options: AxiosRequestConfig) {
       // console.error('请求失败: ', error)
       if (error.response?.status === 401) {
         // 处理 token 过期情况
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
         ElMessage({
           message: '登录过期，请重新登录',
           type: 'error',

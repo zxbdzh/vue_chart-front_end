@@ -30,8 +30,6 @@ const getContactList = async (): Promise<void> => {
       isLoading.value = false
     } else {
       console.log('获取联系人列表失败')
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
       ElMessage.error('获取联系人列表失败')
     }
   })
@@ -46,8 +44,8 @@ const switchContact = (index: number): void => {
   // 获取聊天信息
   // 先清除，再获取
   messages.value = []
-  getChatMessages(contactList.value[index].id)
   create_socket(contactList.value[index].roomId)
+  getChatMessages(contactList.value[index].id)
 }
 
 // 删除联系人
@@ -104,7 +102,7 @@ async function sendMessage(): Promise<void> {
       content: msg,
     },
   }).then(() => {
-    switchContact(activeIndex.value!)
+    getChatMessages(contactList.value[activeIndex.value!].id)
   })
 }
 
