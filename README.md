@@ -1,6 +1,6 @@
 # front_end
 
-This template should help get you started developing with Vue 3 in Vite.
+一个简单 Vue3 + Spring + Socket 实现的聊天室
 
 ## Recommended IDE Setup
 
