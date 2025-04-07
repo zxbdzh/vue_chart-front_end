@@ -457,7 +457,7 @@ defineProps({
 .theme-switch {
   position: fixed;
   top: 13px;
-  right: 60px;
+  right: 5em;
   z-index: 10;
   /* 原有自定义属性保持不变 */
   --toggle-size: 0.9em;
@@ -495,12 +495,13 @@ defineProps({
 /* 超小屏幕适配 */
 @media (max-width: 480px) {
   .logout-btn {
-    right: 90px;
-    padding: 4px 6px;
+    right: 7em;
+    padding: 4px 8px;
   }
 
   .theme-switch {
-    right: 30px;
+    right: 5em;
+    top: 1.5em;
     --toggle-size: 0.7em;
   }
 }
